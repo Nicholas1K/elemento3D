@@ -11,3 +11,5 @@ in questo progetto ci sono due oggetti che sarebbero:
 entrambe le classi hanno dei commenti utili a capire il funzionamento delle vari parti che compongono il codice
 
 ciò che viene esportato e mostrato all'interno della pagina è la scena poi all'interno della scena ci sarà l'oggetto 3D
+
+Al codice è stata aggiunta una nuova scena su cui gira un altro elemento che sarebbe un robot che si muove con lo scroll della paggina

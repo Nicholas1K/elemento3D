@@ -5,15 +5,15 @@ import './App.css'
 
 import ReactDOM from "react-dom";
 import Scene from './components/Scene';
+import SceneTwo from './components/SceneTwo';
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <div style={{width:'100%', height:'500px',backgroundColor:'gray'}}>
-        <Scene />
+        <SceneTwo />
       </div>
       <h1>TEST DI ELEMENTO IN 3D</h1>
       
