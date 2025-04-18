@@ -10,7 +10,7 @@ export default function SceneLogo() {
   return (
     <Canvas camera={{ position: [0, 0, 5], fov: 30 }}>
       <ambientLight intensity={0.5}/>
-      <OrbitControls />
+      <OrbitControls autoRotate autoRotateSpeed={0.5} />
       <ParticleLogo />
     </Canvas>
   )
@@ -22,4 +22,7 @@ export default function SceneLogo() {
 
     SERVE PER AGGIUNGERE UNA GRIGLIA PER CAPIRE L'AMPIEZZA DELLA SCENA
     <gridHelper args={[10, 10]} />
+
+    SERVE A MUOVERE IN 3D CIò CHE C'è SULLA SCENA 
+    <OrbitControls /> ha anche diverse opzioni tipo: autoRotate autoRotateSpeed={0.5}
  */
