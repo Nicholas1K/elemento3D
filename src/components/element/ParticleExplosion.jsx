@@ -33,7 +33,7 @@ export default function ParticleExplosion({ points, mouse }) {
     const intersectPoint = new THREE.Vector3();
     ray.ray.intersectPlane(plane, intersectPoint);
   
-    const interactionRadius = 1.2;
+    const interactionRadius = 0.1; //grandezza del puntatore
   
     for (let i = 0; i < currentPoints.length; i++) {
       const point = currentPoints[i];
@@ -43,14 +43,14 @@ export default function ParticleExplosion({ points, mouse }) {
       const distance = point.distanceTo(intersectPoint);
       if (distance < interactionRadius) {
         const strength = (interactionRadius - distance) / interactionRadius;
-        const force = point.clone().sub(intersectPoint).normalize().multiplyScalar(strength * 0.15);
-        vel.add(force);
+        const direction = point.clone().sub(intersectPoint).normalize();
+        vel.copy(direction.multiplyScalar(2.5 * strength)); // impulso esplosivo
       }
   
-      vel.multiplyScalar(0.01);
+      vel.multiplyScalar(0.09); //scala del puntatore del mouse più + grande più sarà grande il cerchio che rappresenta il puntatore
       point.add(vel);
   
-      const toOrig = orig.clone().sub(point).multiplyScalar(0.02);
+      const toOrig = orig.clone().sub(point).multiplyScalar(0.01);
       point.add(toOrig);
   
       positions[i * 3] = point.x;
