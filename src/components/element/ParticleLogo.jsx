@@ -27,7 +27,7 @@ export default function ParticleLogo({ mouse }) {
       const shapes = data.paths.flatMap(path => path.toShapes(true));
       const tempPoints = [];
 
-      const totalPoints = 50000;
+      const totalPoints = 100000; // numero delle particelle che compongono la scritta 
       const pointsPerShape = Math.floor(totalPoints / shapes.length);
 
       for (let shape of shapes) {
