@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import ParticleLogo from './element/ParticleLogo'
@@ -6,12 +6,17 @@ import ParticleLogo from './element/ParticleLogo'
 
 export default function SceneLogo() {
 
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 30 }}>
+    <Canvas 
+      camera={{ position: [0, 0, 5], fov: 30 }}
+      onPointerMove={(e) => {
+        setMouse({ x: (e.clientX / window.innerWidth) * 2 - 1, y: -(e.clientY / window.innerHeight) * 2 + 1 });
+      }}
+    >
       <ambientLight intensity={0.5}/>
-      <OrbitControls autoRotate autoRotateSpeed={0.5} />
-      <ParticleLogo />
+      <ParticleLogo mouse={mouse}/>
     </Canvas>
   )
 }
