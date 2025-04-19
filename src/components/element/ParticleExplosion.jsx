@@ -24,33 +24,34 @@ export default function ParticleExplosion({ points, mouse }) {
   const velocities = useMemo(() => originalPositions.map(() => new THREE.Vector3()), [originalPositions]);
   const positions = useMemo(() => new Float32Array(currentPoints.flatMap(p => [p.x, p.y, p.z])), [currentPoints]);
 
-  useFrame(({ raycaster, pointer, camera, scene }) => {
-    // Crea un piano fittizio su Z=0
-    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); 
+  useFrame(({ camera }) => {
     const ray = new THREE.Raycaster();
     ray.setFromCamera(mouse, camera);
   
-    const intersectPoint = new THREE.Vector3();
-    ray.ray.intersectPlane(plane, intersectPoint);
+    // Piano z = 0
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const intersect = new THREE.Vector3();
+    ray.ray.intersectPlane(plane, intersect);
   
-    const interactionRadius = 0.02; //grandezza del puntatore
+    const interactionRadius = 0.02; // Più piccolo = più preciso grandezza del puntatore
   
     for (let i = 0; i < currentPoints.length; i++) {
       const point = currentPoints[i];
       const orig = originalPositions[i];
       const vel = velocities[i];
   
-      const distance = point.distanceTo(intersectPoint);
+      const distance = point.distanceTo(intersect);
+  
       if (distance < interactionRadius) {
         const strength = (interactionRadius - distance) / interactionRadius;
-        const direction = point.clone().sub(intersectPoint).normalize();
-        vel.copy(direction.multiplyScalar(7.5 * strength)); // impulso esplosivo
+        const force = point.clone().sub(intersect).normalize().multiplyScalar(strength * 0.2); // 1.2 = più forza forza dell'esplosione
+        vel.add(force);
       }
   
-      vel.multiplyScalar(0.15); //smorza il movimento gradualmente
+      vel.multiplyScalar(0.88); // attrito
       point.add(vel);
   
-      const toOrig = orig.clone().sub(point).multiplyScalar(0.01);
+      const toOrig = orig.clone().sub(point).multiplyScalar(0.015); // ritorno più lento dei punti al loro posto
       point.add(toOrig);
   
       positions[i * 3] = point.x;
