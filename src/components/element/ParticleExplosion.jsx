@@ -24,39 +24,45 @@ export default function ParticleExplosion({ points, mouse }) {
   const velocities = useMemo(() => originalPositions.map(() => new THREE.Vector3()), [originalPositions]);
   const positions = useMemo(() => new Float32Array(currentPoints.flatMap(p => [p.x, p.y, p.z])), [currentPoints]);
 
-  useFrame(() => {
-    // Trasforma il mouse in coordinate mondo
-    const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
-
+  useFrame(({ raycaster, pointer, camera, scene }) => {
+    // Crea un piano fittizio su Z=0
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); 
+    const ray = new THREE.Raycaster();
+    ray.setFromCamera(mouse, camera);
+  
+    const intersectPoint = new THREE.Vector3();
+    ray.ray.intersectPlane(plane, intersectPoint);
+  
     const interactionRadius = 1.2;
-
+  
     for (let i = 0; i < currentPoints.length; i++) {
       const point = currentPoints[i];
       const orig = originalPositions[i];
       const vel = velocities[i];
-
-      const distance = point.distanceTo(vector);
+  
+      const distance = point.distanceTo(intersectPoint);
       if (distance < interactionRadius) {
         const strength = (interactionRadius - distance) / interactionRadius;
-        const force = point.clone().sub(vector).normalize().multiplyScalar(strength * 0.15);
+        const force = point.clone().sub(intersectPoint).normalize().multiplyScalar(strength * 0.15);
         vel.add(force);
       }
-
-      vel.multiplyScalar(0.85);
+  
+      vel.multiplyScalar(0.01);
       point.add(vel);
-
+  
       const toOrig = orig.clone().sub(point).multiplyScalar(0.02);
       point.add(toOrig);
-
+  
       positions[i * 3] = point.x;
       positions[i * 3 + 1] = point.y;
       positions[i * 3 + 2] = point.z;
     }
-
+  
     if (ref.current) {
       ref.current.geometry.attributes.position.needsUpdate = true;
     }
   });
+  
 
   return (
     <Points
@@ -65,7 +71,11 @@ export default function ParticleExplosion({ points, mouse }) {
       stride={3}
       frustumCulled={false}
     >
-      <PointMaterial color='white' size={1} sizeAttenuation={false} depthWrite={false} />
+      <PointMaterial 
+        color='white' 
+        size={1} 
+        sizeAttenuation={false} 
+        depthWrite={false} />
     </Points>
   );
 }
