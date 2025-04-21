@@ -4,7 +4,6 @@ import './App.css'
 import ReactDOM from "react-dom";
 import Scene from './components/Scene';
 import SceneTwo from './components/SceneTwo';
-import SceneThree from './components/SceneThree';
 import SceneLogo from './components/SceneLogo';
 
 
