@@ -5,7 +5,8 @@ import * as THREE from 'three';
 
 export default function ParticleExplosion({ points, mouse }) {
   const ref = useRef();
-  const { camera, size } = useThree();
+  
+//const { camera, size } = useThree();
 
   const originalPositions = useMemo(() => {
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;

@@ -12,7 +12,7 @@ function App() {
 
   return (
     <>
-      <div style={{width:'100%', height:'500px',backgroundColor:'black'}}>
+      <div style={{width:'1200px', height:'500px',backgroundColor:'black'}}>
         <SceneLogo />
       </div>
       <h1>TEST DI ELEMENTO IN 3D</h1>
