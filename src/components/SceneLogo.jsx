@@ -8,12 +8,24 @@ export default function SceneLogo() {
 
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
+
+/*
+  Questa funzione serve per posizionare il puntatore sulla scena 3D con precisione
+  quindi l'effetto di esplosione avverrà perfettamente quando il mouse toccherà il 
+  logo.
+*/
+
+  const handlePointerMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    setMouse({ x, y });
+  };
+
   return (
     <Canvas 
       camera={{ position: [0, 0, 5], fov: 30 }}
-      onPointerMove={(e) => {
-        setMouse({ x: (e.clientX / window.innerWidth) * 2 - 1, y: -(e.clientY / window.innerHeight) * 2 + 1 });
-      }}
+      onPointerMove={handlePointerMove}
     >
       <ambientLight intensity={0.5}/>
       <ParticleLogo mouse={mouse}/>
